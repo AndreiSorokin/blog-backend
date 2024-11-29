@@ -1,53 +1,22 @@
-require('dotenv').config();
-const { Sequelize, Model, DataTypes } = require('sequelize')
 const express = require('express');
+require('express-async-errors');
+const blogsController = require('./controllers/blogs');
+
+const { PORT } = require('./util/config');
+const { connectToDatabase } = require('./util/db');
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
-const PORT = process.env.PORT
+app.use(express.json());
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialectOptions: {
-    ssl: process.env.DATABASE_SSL === 'true' ? {
-      require: true,
-      rejectUnauthorized: false,
-    } : false,
-  },
-});
+app.use('/api/blogs', blogsController);
+app.use(errorHandler);
 
-class Blog extends Model {}
-Blog.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  author: {
-    type: DataTypes.STRING,
-  },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  likes: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-  }
-}, {
-  sequelize,
-  underscored: true,
-  timestamps: false,
-  modelName: 'blog',
-})
+const start = async () => {
+  await connectToDatabase();
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+};
 
-app.get('/api/blogs', async (req, res) => {
-  const blogs = await Blog.findAll();
-  res.json(blogs)
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+start();
