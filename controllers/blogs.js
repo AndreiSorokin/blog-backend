@@ -1,5 +1,5 @@
-const router = require('express').Router()
-const { Blog } = require('../models')
+const router = require('express').Router();
+const { Blog } = require('../models');
 const { blogFinder } = require('../middlewares/blogFinderMiddleware');
 
 router.put('/:id', blogFinder, async(req, res) => {
@@ -10,7 +10,7 @@ router.put('/:id', blogFinder, async(req, res) => {
 
 router.get('/', async (req, res) => {
    const blogs = await Blog.findAll();
-   res.json(blogs)
+   res.json(blogs);
 });
 
 router.get('/:id', blogFinder, (req, res) => {
