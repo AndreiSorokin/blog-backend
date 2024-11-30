@@ -2,6 +2,7 @@ const express = require('express');
 require('express-async-errors');
 const blogsController = require('./controllers/blogs');
 const usersController = require('./controllers/users');
+const loginController = require('./controllers/login');
 
 const { PORT } = require('./util/config');
 const { connectToDatabase } = require('./util/db');
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use('/api/blogs', blogsController);
 app.use('/api/users', usersController);
+app.use('/api/login', loginController);
 app.use(errorHandler);
 
 const start = async () => {
