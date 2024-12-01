@@ -20,7 +20,6 @@ router.get('/:id', blogFinder, (req, res) => {
 
 router.post('/', authToken, async (req, res) => {
    const { author, url, title } = req.body;
-   console.log('USER ID: ', req.user.id)
    const blog = await Blog.create({
       author,
       url,
@@ -30,7 +29,16 @@ router.post('/', authToken, async (req, res) => {
    res.status(201).json(blog);
 });
 
-router.delete('/:id', blogFinder, async (req, res) => {
+router.delete('/:id', blogFinder, authToken, async (req, res) => {
+   const userId = req.user.id;
+
+   console.log("USER ID: ", userId);
+   console.log("BLOG USER ID: ", req.blog.dataValues.userId);
+
+   if(req.blog.dataValues.userId !== userId) {
+      return res.status(403).json({ error: 'Only authors can delete their blogs' });
+   }
+
    await req.blog.destroy();
    res.status(200).send('Blog deleted successfully');
 });
