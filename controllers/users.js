@@ -2,10 +2,18 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
 const { User } = require('../models');
+const { Blog } = require('../models');
 const { userFinder } = require('../middlewares/userFinderMiddleware');
 
 router.get('/', async (req, res) => {
-   const users = await User.findAll();
+   const users = await User.findAll({
+      include: {
+         model: Blog,
+         attributes: {
+            exclude: ['userId']
+         }
+      }
+   });
    res.json(users);
 });
 
@@ -36,5 +44,10 @@ router.put('/:username', userFinder, async(req, res) => {
    await req.user.update({ username });
    res.status(200).json({ message: 'Username updated successfully' })
 });
+
+router.delete('/:username', userFinder, async(req, res) => {
+   await req.user.destroy();
+   res.status(200).send('User deleted successfully');
+})
 
 module.exports = router;

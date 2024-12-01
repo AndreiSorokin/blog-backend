@@ -1,5 +1,7 @@
 const router = require('express').Router();
+
 const { Blog } = require('../models');
+const { User } = require('../models');
 const { blogFinder } = require('../middlewares/blogFinderMiddleware');
 const { authToken } = require('../middlewares/authMiddleware');
 
@@ -10,7 +12,13 @@ router.put('/:id', blogFinder, async(req, res) => {
 });
 
 router.get('/', async (req, res) => {
-   const blogs = await Blog.findAll();
+   const blogs = await Blog.findAll({
+      attributes: { exclude: ['userId'] },
+      include: {
+         model: User,
+         attributes: ['name']
+      }
+   });
    res.json(blogs);
 });
 
@@ -31,9 +39,6 @@ router.post('/', authToken, async (req, res) => {
 
 router.delete('/:id', blogFinder, authToken, async (req, res) => {
    const userId = req.user.id;
-
-   console.log("USER ID: ", userId);
-   console.log("BLOG USER ID: ", req.blog.dataValues.userId);
 
    if(req.blog.dataValues.userId !== userId) {
       return res.status(403).json({ error: 'Only authors can delete their blogs' });
