@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 
 const { Blog } = require('../models');
 const { User } = require('../models');
@@ -12,7 +13,18 @@ router.put('/:id', blogFinder, async(req, res) => {
 });
 
 router.get('/', async (req, res) => {
+   const { search } = req.query;
+
+   const filter = search
+      ? {
+         [Op.or]: [
+            { title: { [Op.iLike]: `%${search}%` } },
+            { author: { [Op.iLike]: `%${search}%` } }
+         ]
+      }
+      : {}
    const blogs = await Blog.findAll({
+      where: filter,
       attributes: { exclude: ['userId'] },
       include: {
          model: User,
