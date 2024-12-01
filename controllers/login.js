@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const { User } = require('../models');
+const { JWT_SECRET } = require('../util/config')
 
 router.post('/', async(req, res) => {
    const { username, password } = req.body;
@@ -11,7 +12,7 @@ router.post('/', async(req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
    };
 
-   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+   const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
    res.status(200).json({
       token,
       username: user.username,
