@@ -40,13 +40,19 @@ router.get('/:id', blogFinder, (req, res) => {
 });
 
 router.post('/', authToken, async (req, res) => {
-   const { author, url, title } = req.body;
+   const { author, url, title, year } = req.body;
    const blog = await Blog.create({
       author,
       url,
       title,
+      year,
       userId: req.user.id
    });
+
+   if(!url || !title || !year) {
+      return res.status(400).json({ error: ' url, title, and year are required' });
+   }
+
    res.status(201).json(blog);
 });
 
