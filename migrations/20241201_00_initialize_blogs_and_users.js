@@ -21,11 +21,11 @@ module.exports = {
             type: DataTypes.STRING,
             allowNull: false,
          },
-         createdAt: {
+         created_at: {
             type: DataTypes.DATE,
             allowNull: false,
          },
-         updatedAt: {
+         updated_at: {
             type: DataTypes.DATE,
             allowNull: false,
          },
@@ -60,11 +60,11 @@ module.exports = {
             onUpdate: 'CASCADE',
          onDelete: 'SET NULL',
       },
-      createdAt: {
+      created_at: {
          type: DataTypes.DATE,
          allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
          type: DataTypes.DATE,
          allowNull: false,
       },

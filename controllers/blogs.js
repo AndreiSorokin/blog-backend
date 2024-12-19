@@ -46,7 +46,7 @@ router.post('/', authToken, async (req, res) => {
       url,
       title,
       year,
-      userId: req.user.id
+      userId: req.user.id,
    });
 
    if(!url || !title || !year) {

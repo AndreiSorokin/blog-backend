@@ -4,8 +4,12 @@ module.exports = {
    up: async ({ context: queryInterface }) => {
       await queryInterface.addColumn('blogs', 'year', {
          type: DataTypes.INTEGER,
-         defaultValue: false,
+         defaultValue: new Date().getFullYear(),
          allowNull: false,
+         validate: {
+            min: 1991,
+            max: new Date().getFullYear(),
+         }
       });
    },
 

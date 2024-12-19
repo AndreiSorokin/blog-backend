@@ -4,6 +4,7 @@ const blogsController = require('./controllers/blogs');
 const usersController = require('./controllers/users');
 const loginController = require('./controllers/login');
 const authorsController = require('./controllers/authors');
+const readingListController = require('./controllers/readinglists');
 
 const { PORT } = require('./util/config');
 const { connectToDatabase } = require('./util/db');
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/blogs', blogsController);
 app.use('/api/users', usersController);
 app.use('/api/authors', authorsController);
+app.use('/api/readinglists', readingListController);
 app.use('/api/login', loginController);
 app.use(errorHandler);
 

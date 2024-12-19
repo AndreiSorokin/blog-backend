@@ -18,7 +18,14 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:username', userFinder, (req, res) => {
-   res.json(req.user)
+   const user = req.user;
+   res.json({
+      name: user.name,
+      username: user.username,
+      readings: user.ReadingLists
+         ? user.ReadingLists.map(entry => entry.Blog)
+         : []
+   });
 });
 
 router.post('/', async(req, res) => {
@@ -34,7 +41,7 @@ router.post('/', async(req, res) => {
    res.status(201).json(newUser);
 });
 
-router.put('/:username', userFinder, async(req, res) => {
+router.put('/:id', userFinder, async(req, res) => {
    const { username } = req.body;
 
    if (!username) {
