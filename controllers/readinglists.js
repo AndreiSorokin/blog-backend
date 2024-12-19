@@ -10,11 +10,31 @@ router.get('/', authToken, async (req, res) => {
       include: {
          model: Blog,
          attributes: ['title', 'author'],
+         as: 'blog'
       },
    });
 
    res.status(200).json(readingList);
 });
+
+router.get('/:id', authToken, async (req, res) => {
+   const { id } = req.params;
+
+   const readingListEntry = await ReadingList.findByPk(id, {
+      where: { userId: req.user.id },
+      include: {
+         model: Blog,
+         attributes: ['title', 'author'],
+         as: 'blog'
+      },
+   });
+
+   if (!readingListEntry || readingListEntry.userId!== req.user.id) {
+      return res.status(404).json({ error: 'Reading list entry not found' });
+   }
+
+   res.status(200).json(readingListEntry);
+})
 
 
 router.post('/', authToken, async (req, res) => {
@@ -36,7 +56,14 @@ router.put('/:id', authToken, async (req, res) => {
    const { id } = req.params;
    const { read } = req.body;
 
-   const readingListEntry = await ReadingList.findByPk(id);
+   const readingListEntry = await ReadingList.findByPk(id, {
+      where: { userId: req.user.id },
+      include: {
+         model: Blog,
+         attributes: ['title', 'author'],
+         as: 'blog'
+      },
+   });
 
    if (!readingListEntry || readingListEntry.userId !== req.user.id) {
       return res.status(404).json({ error: 'Reading list entry not found' });

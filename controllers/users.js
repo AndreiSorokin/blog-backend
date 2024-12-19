@@ -19,12 +19,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:username', userFinder, (req, res) => {
    const user = req.user;
+   console.log('User Readings:', user.readings);
    res.json({
       name: user.name,
       username: user.username,
-      readings: user.ReadingLists
-         ? user.ReadingLists.map(entry => entry.Blog)
-         : []
+      readings: user.readings || []
    });
 });
 

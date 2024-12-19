@@ -15,6 +15,15 @@ Blog.belongsToMany(User, {
    foreignKey: 'blogId',
 });
 
+ReadingList.belongsTo(Blog, {
+   foreignKey: 'blogId',
+   as: 'blog',
+});
+
+ReadingList.belongsTo(User, {
+   foreignKey: 'userId',
+   as: 'user',
+});
 
 
 
