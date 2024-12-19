@@ -17,8 +17,9 @@ router.get('/', async (req, res) => {
    res.json(users);
 });
 
-router.get('/:username', userFinder, (req, res) => {
+router.get('/:id', userFinder, (req, res) => {
    const user = req.user;
+
    console.log('User Readings:', user.readings);
    res.json({
       name: user.name,

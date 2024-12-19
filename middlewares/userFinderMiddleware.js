@@ -1,10 +1,13 @@
 const { User, ReadingList, Blog } = require('../models');
 
 const userFinder = async (req, res, next) => {
-   const { username } = req.params; 
+   const { id } = req.params;
+   const { read } = req.query;
+   const { query } = { where: { id } };
 
    const user = await User.findOne({
-      where: { username },
+      query,
+      where: { id },
       include: [
          {
             model: Blog,
@@ -12,6 +15,7 @@ const userFinder = async (req, res, next) => {
                through: {
                   model: ReadingList,
                   attributes: ['read', 'id'],
+                  where: read !== undefined ? { read: read === 'true' } : undefined
                },
                attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
          },
