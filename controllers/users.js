@@ -52,7 +52,7 @@ router.put('/:id', userFinder, async(req, res) => {
    res.status(200).json({ message: 'Username updated successfully' })
 });
 
-router.delete('/:username', userFinder, async(req, res) => {
+router.delete('/:id', userFinder, async(req, res) => {
    await req.user.destroy();
    res.status(200).send('User deleted successfully');
 })

@@ -34,7 +34,7 @@ router.get('/:id', authToken, async (req, res) => {
    }
 
    res.status(200).json(readingListEntry);
-})
+});
 
 
 router.post('/', authToken, async (req, res) => {

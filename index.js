@@ -5,6 +5,7 @@ const usersController = require('./controllers/users');
 const loginController = require('./controllers/login');
 const authorsController = require('./controllers/authors');
 const readingListController = require('./controllers/readinglists');
+const logoutController = require('./controllers/logout');
 
 const { PORT } = require('./util/config');
 const { connectToDatabase } = require('./util/db');
@@ -18,6 +19,7 @@ app.use('/api/users', usersController);
 app.use('/api/authors', authorsController);
 app.use('/api/readinglists', readingListController);
 app.use('/api/login', loginController);
+app.use('/api/logout', logoutController);
 app.use(errorHandler);
 
 const start = async () => {
