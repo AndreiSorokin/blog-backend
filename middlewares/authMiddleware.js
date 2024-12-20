@@ -15,6 +15,12 @@ const authToken = async (req, res, next) => {
       return res.status(403).json({ error: 'User not found' });
    }
 
+   if (user.disabled) {
+      return res.status(403).json({ error: 'User disabled' });
+   }
+
+   console.log("user.disabled: ", user)
+
    req.user = user;
    next();
 }
